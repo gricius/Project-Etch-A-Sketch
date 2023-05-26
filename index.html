@@ -6,11 +6,10 @@
     <style>
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(16, 1fr);
-            grid-template-rows: repeat(16, 1fr);
             gap: 1px;
-            width: 400px;
-            height: 400px;
+            width: 960px;
+            height: 960px;
+            margin-bottom: 20px;
         }
 
         .grid-item {
@@ -25,18 +24,46 @@
 </head>
 
 <body>
+    <div>
+        <button onclick="resetGrid()">Reset Grid</button>
+    </div>
     <div class="grid-container"></div>
 
     <script>
-        // Get the grid container element
-        const container = document.querySelector('.grid-container');
+        // Function to reset the grid based on user input
+        function resetGrid() {
+            // Prompt the user for the number of squares per side
+            const squaresPerSide = prompt('Enter the number of squares per side (maximum: 100):');
 
-        // Create a 16x16 grid of divs
-        for (let i = 0; i < 16; i++) {
-            for (let j = 0; j < 16; j++) {
-                const gridItem = document.createElement('div');
-                gridItem.classList.add('grid-item');
-                container.appendChild(gridItem);
+            // Convert the input to a number
+            const numSquares = parseInt(squaresPerSide);
+
+            // Check if the input is a valid number and within the limit
+            if (!isNaN(numSquares) && numSquares > 0 && numSquares <= 100) {
+                // Remove the existing grid
+                const container = document.querySelector('.grid-container');
+                container.innerHTML = '';
+
+                // Calculate the size of each square based on the container width
+                const containerWidth = container.offsetWidth;
+                const squareSize = containerWidth / numSquares - 1;
+
+                // Create a new grid of divs
+                container.style.gridTemplateColumns = `repeat(${numSquares}, 1fr)`;
+                container.style.gridTemplateRows = `repeat(${numSquares}, 1fr)`;
+
+                for (let i = 0; i < numSquares; i++) {
+                    for (let j = 0; j < numSquares; j++) {
+                        const gridItem = document.createElement('div');
+                        gridItem.classList.add('grid-item');
+                        gridItem.style.width = `${squareSize}px`;
+                        gridItem.style.height = `${squareSize}px`;
+                        container.appendChild(gridItem);
+                    }
+                }
+            } else {
+                // Display an error message if the input is invalid
+                alert('Please enter a valid number of squares per side (maximum: 100).');
             }
         }
     </script>
