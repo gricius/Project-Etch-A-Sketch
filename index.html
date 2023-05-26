@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Grid of Squares</title>
+    <title>JavaScript Project: Etch-A-Sketch</title>
     <style>
         .grid-container {
             display: grid;
@@ -16,10 +16,6 @@
             background-color: lightgray;
             border: 1px solid white;
         }
-
-        .grid-item:hover {
-            background-color: darkgray;
-        }
     </style>
 </head>
 
@@ -30,6 +26,23 @@
     <div class="grid-container"></div>
 
     <script>
+        // Function to generate a random RGB color
+        function getRandomColor() {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        // Function to darken the color by a certain percentage
+        function darkenColor(color, percentage) {
+            const [r, g, b] = color.match(/\d+/g);
+            const darkenedR = Math.floor(r * (1 - percentage / 100));
+            const darkenedG = Math.floor(g * (1 - percentage / 100));
+            const darkenedB = Math.floor(b * (1 - percentage / 100));
+            return `rgb(${darkenedR}, ${darkenedG}, ${darkenedB})`;
+        }
+
         // Function to reset the grid based on user input
         function resetGrid() {
             // Prompt the user for the number of squares per side
@@ -52,6 +65,7 @@
                 container.style.gridTemplateColumns = `repeat(${numSquares}, 1fr)`;
                 container.style.gridTemplateRows = `repeat(${numSquares}, 1fr)`;
 
+                // Add event listeners to each square to change color on hover
                 for (let i = 0; i < numSquares; i++) {
                     for (let j = 0; j < numSquares; j++) {
                         const gridItem = document.createElement('div');
@@ -59,6 +73,17 @@
                         gridItem.style.width = `${squareSize}px`;
                         gridItem.style.height = `${squareSize}px`;
                         container.appendChild(gridItem);
+
+                        let mouseoverCount = 0;
+
+                        gridItem.addEventListener('mouseover', function () {
+                            if (mouseoverCount < 10) {
+                                const currentColor = gridItem.style.backgroundColor || getRandomColor();
+                                const darkenedColor = darkenColor(currentColor, (mouseoverCount + 1) * 10);
+                                gridItem.style.backgroundColor = darkenedColor;
+                                mouseoverCount++;
+                            }
+                        });
                     }
                 }
             } else {
