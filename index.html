@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Grid of Squares</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            grid-template-rows: repeat(16, 1fr);
+            gap: 1px;
+            width: 400px;
+            height: 400px;
+        }
+
+        .grid-item {
+            background-color: lightgray;
+            border: 1px solid white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid-container"></div>
+
+    <script>
+        // Get the grid container element
+        const container = document.querySelector('.grid-container');
+
+        // Create a 16x16 grid of divs
+        for (let i = 0; i < 16; i++) {
+            for (let j = 0; j < 16; j++) {
+                const gridItem = document.createElement('div');
+                gridItem.classList.add('grid-item');
+                container.appendChild(gridItem);
+            }
+        }
+    </script>
+</body>
+
+</html>
